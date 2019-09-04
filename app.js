@@ -25,8 +25,16 @@ let axios = require('axios');
 
 let app = express();
 
+function cargarIndex(cllBack) {
+    fs.readFile("index.html", (err, dataBuffer) => {
+        cllBack(dataBuffer);
+    });
+};
+
 app.get('/', (req, res) => {
-    
+    cargarIndex((dataBuffer) => {
+        res.send(dataBuffer.toString());
+    });
 });
 
 app.listen(8081, () => {
