@@ -21,12 +21,34 @@ contenido de la carpeta node_modules
 
 let fs = require('fs');
 let express = require('express');
+let axios = require('axios');
 
 let app = express();
 
+let promesaCategorias = new Promise((resolve, reject) => {
+    let url = "https://gist.githubusercontent.com/josejbocanegra/c6c2c82a091b880d0f6062b0a90cce88/raw/abb6016942f7db2797846988b039005c6ea62c2f/categories.json";
+    let req = new XMLHttpRequest();
+    req.open('GET', url);
+    req.onload() = function () {
+        if(req.status == 200){
+            resolve(req.response);
+        }
+        else {
+            reject(req.statusText);
+        }
+    };
+    req.send();
+});
+
 function cargarIndex(cllBack) {
-    fs.readFile("index.html", (err, dataBuffer) => {
-        cllBack(dataBuffer);
+    promesaCategorias.then((resultado) => {
+        let categorias = JSON.parse(resultado);
+
+        
+
+        fs.readFile("index.html", (err, dataBuffer) => {
+            cllBack(dataBuffer);
+        });
     });
 }
 
@@ -34,10 +56,6 @@ app.get('/', (req, res) => {
     cargarIndex((dataBuffer) => {
         res.send(dataBuffer.toString());
     });
-});
-
-app.get('/burguers', (req, res) => {
-    //Load burguers.json and send data
 });
 
 app.listen(8081, () => {
