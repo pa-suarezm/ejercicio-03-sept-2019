@@ -21,19 +21,8 @@ contenido de la carpeta node_modules
 
 let fs = require('fs');
 let express = require('express');
-let axios = require('axios');
 
 let app = express();
-
-async function getBurguers() {
-    try {
-        let ans = await axios.get('/burguers');
-        //Put all data in index.html
-    }
-    catch (err) {
-        console.error(error);
-    }
-}
 
 function cargarIndex(cllBack) {
     fs.readFile("index.html", (err, dataBuffer) => {
