@@ -25,16 +25,30 @@ let axios = require('axios');
 
 let app = express();
 
+async function getBurguers() {
+    try {
+        let ans = await axios.get('/burguers');
+        //Put all data in index.html
+    }
+    catch (err) {
+        console.error(error);
+    }
+}
+
 function cargarIndex(cllBack) {
     fs.readFile("index.html", (err, dataBuffer) => {
         cllBack(dataBuffer);
     });
-};
+}
 
 app.get('/', (req, res) => {
     cargarIndex((dataBuffer) => {
         res.send(dataBuffer.toString());
     });
+});
+
+app.get('/burguers', (req, res) => {
+    //Load burguers.json and send data
 });
 
 app.listen(8081, () => {
