@@ -42,13 +42,28 @@ let promesaCategorias = new Promise((resolve, reject) => {
 
 function cargarIndex(cllBack) {
     promesaCategorias.then((resultado) => {
-        let categorias = JSON.parse(resultado);
+        try{
+            let categorias = JSON.parse(resultado);
 
-        
+            let burgers = categorias[0];
+            let tacos = categorias[1];
+            let salads = categorias[2];
+            let desserts = categorias[3];
+            let drinksSides = categorias[4];
 
-        fs.readFile("index.html", (err, dataBuffer) => {
-            cllBack(dataBuffer);
-        });
+            console.log(burgers[0]);
+            console.log(tacos[0]);
+            console.log(salads[0]);
+            console.log(desserts[0]);
+            console.log(drinksSides[0]);
+
+            fs.readFile("index.html", (err, dataBuffer) => {
+                cllBack(dataBuffer);
+            });
+        }
+        catch(err){
+            alert(err);
+        }
     });
 }
 
