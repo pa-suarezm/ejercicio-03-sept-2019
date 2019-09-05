@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/pa-suarezm/ejercicio-03-sept-2019#readme",
   "dependencies": {
-    "axios": "^0.19.0"
+    "axios": "^0.19.0",
+    "xmlhttprequest": "^1.8.0"
   }
 }

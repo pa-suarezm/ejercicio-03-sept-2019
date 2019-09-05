@@ -22,6 +22,7 @@ contenido de la carpeta node_modules
 let fs = require('fs');
 let express = require('express');
 let axios = require('axios');
+let XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 let app = express();
 
@@ -29,9 +30,11 @@ let promesaCategorias = new Promise((resolve, reject) => {
     let url = "https://gist.githubusercontent.com/josejbocanegra/c6c2c82a091b880d0f6062b0a90cce88/raw/abb6016942f7db2797846988b039005c6ea62c2f/categories.json";
     let req = new XMLHttpRequest();
     req.open('GET', url);
-    req.onload() = function () {
+    req.onload = function () {
+        console.log("Solicitud del JSON enviada");
         if(req.status == 200){
-            resolve(req.response);
+            console.log("JSON resuelto");
+            resolve(req.responseText);
         }
         else {
             reject(req.statusText);
@@ -40,29 +43,44 @@ let promesaCategorias = new Promise((resolve, reject) => {
     req.send();
 });
 
+
+
+
+
 function cargarIndex(cllBack) {
+    /*fs.readFile("index.html", (err, dataBuffer) => {
+        cllBack(dataBuffer);
+    });*/
+
     promesaCategorias.then((resultado) => {
         try{
-            let categorias = JSON.parse(resultado);
+            console.log("Intentando resolver promesa");
 
+            let categorias = JSON.parse(resultado);
+    
             let burgers = categorias[0];
             let tacos = categorias[1];
             let salads = categorias[2];
             let desserts = categorias[3];
             let drinksSides = categorias[4];
-
-            console.log(burgers[0]);
-            console.log(tacos[0]);
-            console.log(salads[0]);
-            console.log(desserts[0]);
-            console.log(drinksSides[0]);
-
+    
+            
+            //ACCEDER A UN PRODUCTO EN PARTICULAR DADA UNA CATEGORIA
+            console.log(burgers.products[0]);
+            console.log(tacos.products[0]);
+            console.log(salads.products[0]);
+            console.log(desserts.products[0]);
+            console.log(drinksSides.products[0]);
+            
+            //TEST-------------------------------------------------------------------------
             fs.readFile("index.html", (err, dataBuffer) => {
                 cllBack(dataBuffer);
             });
+            //-----------------------------------------------------------------------------
+
         }
         catch(err){
-            alert(err);
+            console.error(err);
         }
     });
 }
@@ -71,6 +89,7 @@ app.get('/', (req, res) => {
     cargarIndex((dataBuffer) => {
         res.send(dataBuffer.toString());
     });
+    console.log("Solicitud a localhost:8081/ resuelta");
 });
 
 app.listen(8081, () => {
